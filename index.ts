@@ -290,26 +290,26 @@ class Notes implements INotes {
 }
 
 
-// examples
-const s = new Notes
-const r =  ConfirmationNote.Instantiation ('cName' , 'cContent')
-s.addNote (r)
-s.addNote (ConfirmationNote.Instantiation ('name' , ''))
-s.addNote (ConfirmationNote.Instantiation ('name2' , 'content2'))
-s.addNote (DefaultNote.Instantiation ('naMes' , 'go to me'))
-s.addNote (DefaultNote.Instantiation ('nameq' , 'contentq'))
-console.dir (s.listOfNotes)
-// s.deleteNote (1);
-s.editNote (1  , {name : '' , content : 'asd' , confirmation : true})
-s.listOfNotes[0].note.completedNote()
-s.listOfNotes[2].note.completedNote()
-console.log (s.numberOfAllNotes())
-console.log (s.outstandingNotes())
-console.log (s.viewNoteById(s.listOfNotes[0].id));
-console.log (s.viewAllNotes())
-console.log (s.searchByName ('nameQ'))
-console.log (s.searchByContent ('go To'));
-console.log (s.sortByStatus())
-console.log (s.sortByCreationTime())
-console.log (s.listOfNotes)
+// // examples
+// const s = new Notes
+// const r =  ConfirmationNote.Instantiation ('cName' , 'cContent')
+// s.addNote (r)
+// s.addNote (ConfirmationNote.Instantiation ('name' , ''))
+// s.addNote (ConfirmationNote.Instantiation ('name2' , 'content2'))
+// s.addNote (DefaultNote.Instantiation ('naMes' , 'go to me'))
+// s.addNote (DefaultNote.Instantiation ('nameq' , 'contentq'))
+// console.dir (s.listOfNotes)
+// // s.deleteNote (1);
+// s.editNote (1  , {name : '' , content : 'asd' , confirmation : true})
+// s.listOfNotes[0].note.completedNote()
+// s.listOfNotes[2].note.completedNote()
+// console.log (s.numberOfAllNotes())
+// console.log (s.outstandingNotes())
+// console.log (s.viewNoteById(s.listOfNotes[0].id));
+// console.log (s.viewAllNotes())
+// console.log (s.searchByName ('nameQ'))
+// console.log (s.searchByContent ('go To'));
+// console.log (s.sortByStatus())
+// console.log (s.sortByCreationTime())
+// console.log (s.listOfNotes)
 
