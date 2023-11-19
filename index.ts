@@ -27,6 +27,7 @@ interface INotes {
     addNote : (note : AllTypesOfNotes | undefined) => void
     deleteNote : (index : number) => void
     editNote : (index : number , note : EditNoteType<AllTypesOfNotes>) => void
+    completedNote : (index : number) => void
     viewNoteById : (id : number) => AllTypesOfNotes | undefined
     viewAllNotes : () => Array<AllTypesOfNotes>
     numberOfAllNotes : () => number
@@ -43,7 +44,7 @@ function isEditConfirmationNote (value : EditNoteType<AllTypesOfNotes>) : value 
 function isEditDefaultNote (value : EditNoteType<AllTypesOfNotes>) : value is EditNoteType<DefaultNote> {
     return !('confirmation' in value) ? true : false
 }
-function isConfirmationNome (value : AllTypesOfNotes) : value is ConfirmationNote {
+function isConfirmationNote (value : AllTypesOfNotes) : value is ConfirmationNote {
     return value instanceof ConfirmationNote ? true : false
 }
 function isDefaultNote (value : AllTypesOfNotes) : value is DefaultNote {
@@ -207,36 +208,32 @@ class Notes implements INotes {
         }
     }
     deleteNote(index: number) {
-        if (index < 0) {
-            return
-        }
-        else {
-            if (index >= 0 && index < this.listOfNotes.length) {
-                this.listOfNotes.splice (index , 1)
-            }
+        if (index >= 0 && index < this.listOfNotes.length) {
+            this.listOfNotes.splice (index , 1)
         }
     }
     editNote (index : number , editNote : EditNoteType<AllTypesOfNotes>) {
-        if (index < 0) {
-            return
-        }
-        else {
-            if (index >= 0 && index < this.listOfNotes.length) {
-                const currentNote = this.listOfNotes[index]
-                if (isConfirmationNome (currentNote.note)) {
-                    // тип заметки "подтверждение при редактировании", 
-                    // проверка доступности поля подтверждения confirmationDefaultNote | ConfirmationNote
-                    if (isEditConfirmationNote (editNote)) {
-                        currentNote.note.editNote (editNote)
-                    }
-                }
-                else {
-                    // игнорирование типа с подтверждением в типе без, хотя полями они совсместимы, формальность :)
-                    if (isEditDefaultNote (editNote)) {
-                        currentNote.note.editNote (editNote)
-                    }
+        if (index >= 0 && index < this.listOfNotes.length) {
+            const currentNote = this.listOfNotes[index]
+            if (isConfirmationNote (currentNote.note)) {
+                // тип заметки "подтверждение при редактировании", 
+                // проверка доступности поля подтверждения confirmationDefaultNote | ConfirmationNote
+                if (isEditConfirmationNote (editNote)) {
+                    currentNote.note.editNote (editNote)
                 }
             }
+            else {
+                // игнорирование типа с подтверждением в типе без, хотя полями они совсместимы, формальность :)
+                if (isEditDefaultNote (editNote)) {
+                    currentNote.note.editNote (editNote)
+                }
+            }
+        }
+    }
+    completedNote (index : number) {
+        if (index >= 0 && index < this.listOfNotes.length) {
+            if (this._listOfNotes[index].note.status === false)
+            this._listOfNotes[index].note.completedNote ()
         }
     }
     viewNoteById (id : number) {
@@ -311,5 +308,7 @@ class Notes implements INotes {
 // console.log (s.searchByContent ('go To'));
 // console.log (s.sortByStatus())
 // console.log (s.sortByCreationTime())
+// console.log (s.listOfNotes)
+// s.completedNote(1)
 // console.log (s.listOfNotes)
 
