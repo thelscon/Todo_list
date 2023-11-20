@@ -1,14 +1,14 @@
-const enum EStatus {
-    Completed ,
-    NotCompleted
-}
-
 type AllTypesOfNotes = DefaultNote | ConfirmationNote
 
 type EditNoteType<T extends AllTypesOfNotes> = 
     T extends DefaultNote ? { name ?: string , content ?: string }
     : T extends ConfirmationNote ? { name ?: string , content ?: string , confirmation : boolean }
     : never
+
+const enum EStatus {
+    Completed ,
+    NotCompleted
+}
 
 interface INote {
     name : string ,
