@@ -1,3 +1,8 @@
+enum EStatus {
+    Completed ,
+    NotCompleted
+}
+
 type AllTypesOfNotes = DefaultNote | ConfirmationNote
 
 type EditNoteType<T extends AllTypesOfNotes> = 
@@ -10,7 +15,7 @@ interface INote {
     content : string ,
     readonly dateOfCreation : Date ,
     dateOfEdition : Date | undefined,
-    status : boolean
+    status : EStatus
 
     editNote : (note : EditNoteType<AllTypesOfNotes>) => void
     completedNote : () => void
@@ -39,16 +44,16 @@ interface INotes {
 }
 
 function isEditConfirmationNote (value : EditNoteType<AllTypesOfNotes>) : value is EditNoteType<ConfirmationNote> {
-    return 'confirmation' in value ? true : false
+    return 'confirmation' in value
 }
 function isEditDefaultNote (value : EditNoteType<AllTypesOfNotes>) : value is EditNoteType<DefaultNote> {
-    return !('confirmation' in value) ? true : false
+    return !('confirmation' in value)
 }
 function isConfirmationNote (value : AllTypesOfNotes) : value is ConfirmationNote {
-    return value instanceof ConfirmationNote ? true : false
+    return value instanceof ConfirmationNote
 }
 function isDefaultNote (value : AllTypesOfNotes) : value is DefaultNote {
-    return value instanceof DefaultNote ? true : false
+    return value instanceof DefaultNote
 }
 
 abstract class Note implements INote {
@@ -58,7 +63,7 @@ abstract class Note implements INote {
     protected _name !: string
     private readonly _dateOfCreation : Date = new Date
     protected _dateOfEdition : Date | undefined
-    private _status : boolean = false
+    private _status : EStatus = EStatus.NotCompleted
 
     get name () : string {
         return this._name
@@ -72,7 +77,7 @@ abstract class Note implements INote {
         return this._dateOfEdition
     }
 
-    get status () : boolean {
+    get status () : EStatus {
         return this._status
     }
 
@@ -84,7 +89,7 @@ abstract class Note implements INote {
     }
 
     completedNote () {
-        this._status = true
+        this._status = EStatus.Completed
     }
 }
 
@@ -232,7 +237,7 @@ class Notes implements INotes {
     }
     completedNote (index : number) {
         if (index >= 0 && index < this.listOfNotes.length) {
-            if (this._listOfNotes[index].note.status === false)
+            if (this._listOfNotes[index].note.status === EStatus.NotCompleted)
             this._listOfNotes[index].note.completedNote ()
         }
     }
@@ -246,7 +251,7 @@ class Notes implements INotes {
         return this._listOfNotes.length
     }
     outstandingNotes () {
-        return this._listOfNotes.filter (item => item.note.status === false).length
+        return this._listOfNotes.filter (item => item.note.status === EStatus.NotCompleted).length
     }
     searchByName (searchName : string) {
         return this._listOfNotes.find (item => item.note.name.toLocaleLowerCase() === searchName.toLocaleLowerCase())?.note
