@@ -1,21 +1,21 @@
 "use strict";
 function isEditConfirmationNote(value) {
-    return 'confirmation' in value ? true : false;
+    return 'confirmation' in value;
 }
 function isEditDefaultNote(value) {
-    return !('confirmation' in value) ? true : false;
+    return !('confirmation' in value);
 }
 function isConfirmationNote(value) {
-    return value instanceof ConfirmationNote ? true : false;
+    return value instanceof ConfirmationNote;
 }
 function isDefaultNote(value) {
-    return value instanceof DefaultNote ? true : false;
+    return value instanceof DefaultNote;
 }
 class Note {
     _name;
     _dateOfCreation = new Date;
     _dateOfEdition;
-    _status = false;
+    _status = 1 /* EStatus.NotCompleted */;
     get name() {
         return this._name;
     }
@@ -33,7 +33,7 @@ class Note {
         this._dateOfCreation = new Date;
     }
     completedNote() {
-        this._status = true;
+        this._status = 0 /* EStatus.Completed */;
     }
 }
 class DefaultNote extends Note {
@@ -158,7 +158,7 @@ class Notes {
     }
     completedNote(index) {
         if (index >= 0 && index < this.listOfNotes.length) {
-            if (this._listOfNotes[index].note.status === false)
+            if (this._listOfNotes[index].note.status === 1 /* EStatus.NotCompleted */)
                 this._listOfNotes[index].note.completedNote();
         }
     }
@@ -172,7 +172,7 @@ class Notes {
         return this._listOfNotes.length;
     }
     outstandingNotes() {
-        return this._listOfNotes.filter(item => item.note.status === false).length;
+        return this._listOfNotes.filter(item => item.note.status === 1 /* EStatus.NotCompleted */).length;
     }
     searchByName(searchName) {
         return this._listOfNotes.find(item => item.note.name.toLocaleLowerCase() === searchName.toLocaleLowerCase())?.note;

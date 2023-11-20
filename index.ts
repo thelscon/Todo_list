@@ -1,4 +1,4 @@
-enum EStatus {
+const enum EStatus {
     Completed ,
     NotCompleted
 }
